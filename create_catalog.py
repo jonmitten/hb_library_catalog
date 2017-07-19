@@ -63,11 +63,17 @@ def assign_type(publisher, pub_info_dict):
         publishers = category.get('publishers')
         if not isinstance(publishers, list):
             return ''
-        if publisher.lower() in [p.lower() for p in publishers]:
-            display = category.get('display_name')
-            log.debug('Found type assignment for [{}] => [{}]'.format(publisher, display))
-            assignment = display
-            break
+        log.debug("publishers: {}".format(publishers))
+        log.debug("publisher: {}".format(publisher))
+        try:
+            if publisher.lower() in [p.lower() for p in publishers]:
+                display = category.get('display_name')
+                log.debug('Found type assignment for [{}] => [{}]'.format(publisher, display))
+                assignment = display
+                break
+        except AttributeError as ae:
+            log.debug('Publisher has an error: [{}]'.format(ae))
+
     if not assignment:
         log.debug('Unassigned type for publisher: [{}]'.format(publisher))
 
